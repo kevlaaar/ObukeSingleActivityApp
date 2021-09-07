@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/transactionsFragment"
+    android:id="@+id/nav_graph">
+
+    <fragment
+        android:id="@+id/transactionsFragment"
+        android:label="TransactionsFragment"
+        tools:layout="@layout/fragment_transactions"
+        android:name="com.example.obukesingleactivityapplication.TransactionsFragment">
+
+        <action
+            android:id="@+id/action_transactionFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/transactionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_transactionsFragment_to_fragmentTri"
+            app:destination="@id/fragmentTri" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:label="ProfileFragment"
+        android:name="com.example.obukesingleactivityapplication.ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+
+        <argument
+            android:name="amountOfMoneyArg"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentTri"
+        android:name="com.example.obukesingleactivityapplication.FragmentTri"
+        android:label="fragment_tri"
+        tools:layout="@layout/fragment_tri" />
+
+
+</navigation>
