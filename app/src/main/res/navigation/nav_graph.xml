@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/transactionsFragment"
+    app:startDestination="@id/loginFragment"
     android:id="@+id/nav_graph">
 
     <fragment
@@ -44,6 +44,31 @@
         android:name="com.example.obukesingleactivityapplication.FragmentTri"
         android:label="fragment_tri"
         tools:layout="@layout/fragment_tri" />
+
+    <fragment
+        android:id="@+id/fragmentRegistration"
+        android:label="RegistrationFragment"
+        android:name="com.example.obukesingleactivityapplication.RegistrationFragment"
+        tools:layout="@layout/fragment_registration">
+
+        <action
+            android:id="@+id/action_registrationFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/fragmentRegistration"
+            app:popUpToInclusive="true"/>
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        tools:layout="@layout/fragment_login"
+        android:label="LoginFragment"
+        android:name="com.example.obukesingleactivityapplication.LoginFragment"/>
 
 
 </navigation>
