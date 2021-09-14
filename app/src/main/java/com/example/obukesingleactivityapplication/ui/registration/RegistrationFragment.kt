@@ -1,7 +1,6 @@
-package com.example.obukesingleactivityapplication
+package com.example.obukesingleactivityapplication.ui.registration
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.obukesingleactivityapplication.R
 import com.example.obukesingleactivityapplication.databinding.FragmentRegistrationBinding
 import com.example.obukesingleactivityapplication.models.RegisterUserBody
 import com.google.android.material.snackbar.Snackbar
@@ -36,12 +36,19 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
                     createUser()
                 }
             }
+            backArrowImage.setOnClickListener{
+                findNavController().popBackStack()
+            }
         }
 
         viewModel.registrationStatus.observe(viewLifecycleOwner, {
             it?.let {
                 if (it) {
-                    findNavController().navigate(R.id.action_registrationFragment_to_profileFragment)
+                    val validationAction = RegistrationFragmentDirections.actionRegistrationFragmentToVerificationCodeFragment(
+                        binding.emailEditText.text.toString().trim(),
+                        binding.passwordEditText.text.toString()
+                    )
+                    findNavController().navigate(validationAction)
                 } else {
                     Snackbar.make(binding.root, "REGISTRATION FAILED", Snackbar.LENGTH_LONG).show()
                 }

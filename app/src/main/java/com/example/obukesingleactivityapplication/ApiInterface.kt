@@ -1,6 +1,7 @@
 package com.example.obukesingleactivityapplication
 
 import com.example.obukesingleactivityapplication.models.RegisterUserBody
+import com.example.obukesingleactivityapplication.models.RegisterVerificationBody
 import com.example.obukesingleactivityapplication.models.UserResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -32,6 +33,12 @@ interface ApiInterface {
 
     @POST("/api/auth/register")
     fun registerUser (@Body registerUserBody: RegisterUserBody): Call<UserResponse>
+
+    @POST("/api/auth/login")
+    fun login(@Query("email") email:String, @Query("password") password: String): Call<UserResponse>
+
+    @POST("/api/auth/verify")
+    fun verifyUser(@Body registerVerificationBody: RegisterVerificationBody): Call<UserResponse>
 
 
 

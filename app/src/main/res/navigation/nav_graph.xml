@@ -46,9 +46,9 @@
         tools:layout="@layout/fragment_tri" />
 
     <fragment
-        android:id="@+id/fragmentRegistration"
+        android:id="@+id/registrationFragment"
         android:label="RegistrationFragment"
-        android:name="com.example.obukesingleactivityapplication.RegistrationFragment"
+        android:name="com.example.obukesingleactivityapplication.ui.registration.RegistrationFragment"
         tools:layout="@layout/fragment_registration">
 
         <action
@@ -58,8 +58,17 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/fragmentRegistration"
+            app:popUpTo="@id/registrationFragment"
             app:popUpToInclusive="true"/>
+
+        <action
+            android:id="@+id/action_registrationFragment_to_verificationCodeFragment"
+            app:destination="@+id/validationCodeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/registrationFragment" />
 
 
     </fragment>
@@ -68,7 +77,37 @@
         android:id="@+id/loginFragment"
         tools:layout="@layout/fragment_login"
         android:label="LoginFragment"
-        android:name="com.example.obukesingleactivityapplication.LoginFragment"/>
+        android:name="com.example.obukesingleactivityapplication.ui.login.LoginFragment">
+
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment"
+            app:popUpTo="@id/loginFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/validationCodeFragment"
+        tools:layout="@layout/fragment_validation_code"
+        android:name="com.example.obukesingleactivityapplication.ui.registration.ValidationCodeFragment"
+        android:label="ValidationCodeFragment">
+
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue=""/>
+        <argument
+            android:name="password"
+            app:argType="string"
+            android:defaultValue=""/>
+
+
+    </fragment>
+
 
 
 </navigation>
