@@ -1,5 +1,6 @@
 package com.example.obukesingleactivityapplication.ui.registration
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,10 +10,14 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.obukesingleactivityapplication.R
 import com.example.obukesingleactivityapplication.databinding.FragmentValidationCodeBinding
+import com.example.obukesingleactivityapplication.hideKeyboard
 import com.example.obukesingleactivityapplication.models.RegisterVerificationBody
+import com.example.obukesingleactivityapplication.models.User
+import com.google.gson.Gson
 
 class ValidationCodeFragment : Fragment() {
 
@@ -53,6 +58,7 @@ class ValidationCodeFragment : Fragment() {
 
                 override fun afterTextChanged(s: Editable?) {
                     if(s.toString().isNotEmpty()){
+                        binding.root.hideKeyboard()
                         validationCode = "${validationCode}${s.toString()}"
                         viewModel.verifyUser(RegisterVerificationBody(args.email,args.password,validationCode))
 
@@ -70,6 +76,21 @@ class ValidationCodeFragment : Fragment() {
                 }
             }
         })
+        viewModel.userLiveData.observe(viewLifecycleOwner, {
+            it?.let {
+                saveUserToSharedPreferencesAndGoToGreetingsScreen(it)
+            }
+        })
+    }
+
+    private fun saveUserToSharedPreferencesAndGoToGreetingsScreen(userObject: User) {
+        val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        val userJson = Gson().toJson(userObject)
+        with(sharedPreferences.edit()){
+            putString("USER_OBJECT", userJson)
+            apply()
+        }
+        findNavController().navigate(R.id.action_verificationFragment_to_greetingsFragment)
     }
 
     private fun resetEditTexts() {

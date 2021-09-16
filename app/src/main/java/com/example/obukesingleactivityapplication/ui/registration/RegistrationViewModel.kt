@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.obukesingleactivityapplication.ApiInterface
 import com.example.obukesingleactivityapplication.models.RegisterUserBody
 import com.example.obukesingleactivityapplication.models.RegisterVerificationBody
+import com.example.obukesingleactivityapplication.models.User
 import com.example.obukesingleactivityapplication.models.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +18,8 @@ class RegistrationViewModel: ViewModel() {
     val registrationStatus = MutableLiveData<Boolean?>(null)
 
     val validationStatus = MutableLiveData<Boolean?>(null)
+
+    val userLiveData = MutableLiveData<User?>(null)
 
 
     fun registerUser(registrationUserBody: RegisterUserBody) {
@@ -39,6 +42,9 @@ class RegistrationViewModel: ViewModel() {
             override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
                 if(response.isSuccessful) {
                     validationStatus.postValue(true)
+                    response.body()?.let{
+                        userLiveData.postValue(it.user)
+                    }
                 } else {
                     validationStatus.postValue(false)
                 }

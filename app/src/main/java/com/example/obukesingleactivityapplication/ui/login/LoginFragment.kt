@@ -1,5 +1,6 @@
 package com.example.obukesingleactivityapplication.ui.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.obukesingleactivityapplication.R
 import com.example.obukesingleactivityapplication.databinding.FragmentLoginBinding
 import com.example.obukesingleactivityapplication.isValidEmail
+import com.example.obukesingleactivityapplication.models.User
 import com.example.obukesingleactivityapplication.showInfoSnackBar
+import com.google.gson.Gson
 
 class LoginFragment : Fragment() {
 
@@ -58,6 +61,43 @@ class LoginFragment : Fragment() {
                 }
             }
         })
+        viewModel.verificationStatus.observe(viewLifecycleOwner, {
+            it?.let {
+                if(it){
+                    binding.loginProgressBar.visibility = View.GONE
+                    val validationAction = LoginFragmentDirections
+                        .actionLoginFragmentToVerificationFragment(binding.emailEditText.text.toString().trim(), binding.passwordEditText.text.toString())
+                    findNavController().navigate(validationAction)
+                }
+            }
+        })
+
+        viewModel.userLiveData.observe(viewLifecycleOwner, {
+            it?.let { nonNullUser ->
+                saveUserToSharedPreferencesAndGoToGreetingsScreen(nonNullUser)
+            }
+        })
+
+        viewModel.bearerTokenLiveData.observe(viewLifecycleOwner, {
+            it?.let { bearerToken ->
+                val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
+                with(sharedPreferences.edit()){
+                    putString("BEARER_TOKEN", bearerToken)
+                    apply()
+                }
+
+            }
+        })
+    }
+
+    private fun saveUserToSharedPreferencesAndGoToGreetingsScreen(userObject: User) {
+        val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
+        val userJson = Gson().toJson(userObject)
+        with(sharedPreferences.edit()){
+            putString("USER_OBJECT", userJson)
+            apply()
+        }
+        findNavController().navigate(R.id.action_loginFragment_to_greetingsFragment)
     }
 
     private fun validInput(): Boolean {

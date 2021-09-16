@@ -40,6 +40,8 @@ interface ApiInterface {
     @POST("/api/auth/verify")
     fun verifyUser(@Body registerVerificationBody: RegisterVerificationBody): Call<UserResponse>
 
+    @POST("/api/auth/logout")
+    fun logout(@Header("Authorization") bearerToken: String): Call<String>
 
 
 
