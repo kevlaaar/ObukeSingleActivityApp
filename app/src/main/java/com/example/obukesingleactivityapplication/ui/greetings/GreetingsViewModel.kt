@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.obukesingleactivityapplication.ApiInterface
+import com.example.obukesingleactivityapplication.models.LogoutResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -14,9 +15,8 @@ class GreetingsViewModel: ViewModel() {
 
     fun logout(bearerToken: String) {
         val call = ApiInterface.create().logout("Bearer $bearerToken")
-        call.enqueue(object: Callback<String>{
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                Log.e("LOGOUT","${response.code()} ${response.message()} ${response.body()} ${response.errorBody()}")
+        call.enqueue(object: Callback<LogoutResponse>{
+            override fun onResponse(call: Call<LogoutResponse>, response: Response<LogoutResponse>) {
                 if(response.isSuccessful){
                     logoutStatus.postValue(true)
                 } else {
@@ -24,7 +24,7 @@ class GreetingsViewModel: ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<LogoutResponse>, t: Throwable) {
                 logoutStatus.postValue(false)
             }
         })

@@ -1,8 +1,6 @@
 package com.example.obukesingleactivityapplication
 
-import com.example.obukesingleactivityapplication.models.RegisterUserBody
-import com.example.obukesingleactivityapplication.models.RegisterVerificationBody
-import com.example.obukesingleactivityapplication.models.UserResponse
+import com.example.obukesingleactivityapplication.models.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -19,10 +17,16 @@ interface ApiInterface {
         fun create(): ApiInterface {
             val interceptor = HttpLoggingInterceptor()
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-            val client: OkHttpClient = OkHttpClient.Builder().addInterceptor(interceptor).build()
+            val client: OkHttpClient = OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .addInterceptor {
+                    it.proceed(
+                        it.request().newBuilder().addHeader("Accept", "application/json").build()
+                    )
+                }
+                .build()
 
-            val retrofit = Retrofit.Builder().
-            addConverterFactory(GsonConverterFactory.create())
+            val retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
                 .client(client)
                 .build()
@@ -32,17 +36,29 @@ interface ApiInterface {
     }
 
     @POST("/api/auth/register")
-    fun registerUser (@Body registerUserBody: RegisterUserBody): Call<UserResponse>
+    fun registerUser(@Body registerUserBody: RegisterUserBody): Call<UserResponse>
 
     @POST("/api/auth/login")
-    fun login(@Query("email") email:String, @Query("password") password: String): Call<UserResponse>
+    fun login(
+        @Query("email") email: String,
+        @Query("password") password: String
+    ): Call<UserResponse>
 
     @POST("/api/auth/verify")
     fun verifyUser(@Body registerVerificationBody: RegisterVerificationBody): Call<UserResponse>
 
     @POST("/api/auth/logout")
-    fun logout(@Header("Authorization") bearerToken: String): Call<String>
+    fun logout(@Header("Authorization") bearerToken: String): Call<LogoutResponse>
 
+    @POST("/api/auth/refresh")
+    fun refreshToken(@Header("Authorization") bearerToken: String): Call<UserResponse>
+
+    @GET("/api/activity-history")
+    fun getActivityHistory(
+        @Header("Authorization") bearerToken: String,
+        @Query("badge_type_id") badgeTypeId: Int = 0,
+        @Query("badge_id") badgeId: Int = 0
+    ): Call<ActivityHistoryResponse>
 
 
 }

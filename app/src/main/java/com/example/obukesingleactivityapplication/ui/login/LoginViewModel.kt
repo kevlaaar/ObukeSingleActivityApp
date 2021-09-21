@@ -14,10 +14,35 @@ class LoginViewModel: ViewModel() {
 
     val loginStatus = MutableLiveData<Boolean?>(null)
     val verificationStatus = MutableLiveData<Boolean?>(null)
-    val userLiveData = MutableLiveData<User?>(null)
+    val userResponseLiveData = MutableLiveData<UserResponse?>(null)
     val bearerTokenLiveData = MutableLiveData<String?>(null)
 
+    val refreshTokenUserLiveData = MutableLiveData<User?>(null)
+    val refreshTokenStatus = MutableLiveData<Boolean?>(null)
 
+
+    fun refreshToken(bearerToken: String) {
+        val call = ApiInterface.create().refreshToken("Bearer $bearerToken")
+        call.enqueue(object: Callback<UserResponse>{
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                if(response.isSuccessful){
+                    response.body()?.let{
+                        refreshTokenUserLiveData.postValue(it.user)
+                        refreshTokenStatus.postValue(true)
+                    }
+                } else {
+                    refreshTokenUserLiveData.postValue(null)
+                    refreshTokenStatus.postValue(false)
+                }
+            }
+
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                refreshTokenUserLiveData.postValue(null)
+                refreshTokenStatus.postValue(false)
+            }
+
+        })
+    }
 
     fun login(email: String, password: String){
         val call = ApiInterface.create().login(email, password)
@@ -29,7 +54,7 @@ class LoginViewModel: ViewModel() {
                     loginStatus.postValue(true)
                     response.body()?.let {
                         bearerTokenLiveData.postValue(it.accessToken)
-                        userLiveData.postValue(it.user)
+                        userResponseLiveData.postValue(it)
                     }
                 } else {
                     if(response.code() == 422) {

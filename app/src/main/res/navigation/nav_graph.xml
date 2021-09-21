@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/loginFragment"
+    app:startDestination="@id/splashScreenFragment"
     android:id="@+id/nav_graph">
 
     <fragment
@@ -154,8 +154,51 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpToInclusive="true"/>
 
+        <action
+            android:id="@+id/action_greetingsFragment_to_activityHistoryFragment"
+            app:destination="@id/activityHistoryFragment"
+            app:popUpTo="@id/greetingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.example.obukesingleactivityapplication.ui.login.SplashScreenFragment"
+        tools:layout="@layout/fragment_splash_screen"
+        android:label="SplashScreenFragment">
+
+        <action
+            android:id="@+id/action_splashScreenFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/splashScreenFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"/>
+
+
+        <action
+            android:id="@+id/action_splashScreenFragment_to_greetingsFragment"
+            app:destination="@id/greetingsFragment"
+            app:popUpTo="@id/splashScreenFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/activityHistoryFragment"
+        android:name="com.example.obukesingleactivityapplication.ui.activity_history.ActivityHistoryFragment"
+        tools:layout="@layout/fragment_activity_history"
+        android:label="ActivityHistoryFragment"/>
 
 
 </navigation>

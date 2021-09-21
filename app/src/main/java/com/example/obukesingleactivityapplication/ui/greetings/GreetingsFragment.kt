@@ -48,6 +48,9 @@ class GreetingsFragment : Fragment() {
                     viewModel.logout(it)
                 }
             }
+            goToActivityHistoryButton.setOnClickListener{
+                findNavController().navigate(R.id.action_greetingsFragment_to_activityHistoryFragment)
+            }
         }
 
         viewModel.logoutStatus.observe(viewLifecycleOwner, {
