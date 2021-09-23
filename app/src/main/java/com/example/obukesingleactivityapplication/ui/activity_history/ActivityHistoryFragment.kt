@@ -14,7 +14,7 @@ class ActivityHistoryFragment: Fragment(), ActivityHistoryAdapter.OnDeleteActivi
     private var _binding: FragmentActivityHistoryBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: ActivityHistoryViewModel
-
+    var bearerToken: String? = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,13 +35,15 @@ class ActivityHistoryFragment: Fragment(), ActivityHistoryAdapter.OnDeleteActivi
             adapter.setData(it)
         })
         val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
-        val bearerToken = sharedPreferences.getString("BEARER_TOKEN", "")
+        bearerToken = sharedPreferences.getString("BEARER_TOKEN", "")
 
 
         viewModel.getAllActivityHistory(bearerToken?: "")
     }
 
     override fun onDeleteActivity(activityItem: ActivityItem) {
-        viewModel.removeActivityFromList(activityItem)
+        bearerToken?.let {
+            viewModel.deleteActivity(it, activityItem)
+        }
     }
 }

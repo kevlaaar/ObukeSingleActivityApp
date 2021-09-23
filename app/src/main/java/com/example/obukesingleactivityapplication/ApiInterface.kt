@@ -38,17 +38,22 @@ interface ApiInterface {
     @POST("/api/auth/register")
     fun registerUser(@Body registerUserBody: RegisterUserBody): Call<UserResponse>
 
+    @DELETE("/api/delete-activity")
+    suspend fun deleteActivity(
+        @Header("Authorization") bearerToken: String,
+        @Query("id")activityId: Int): Response<DeleteResponse>
+
     @POST("/api/auth/login")
-    fun login(
+    suspend fun login(
         @Query("email") email: String,
         @Query("password") password: String
-    ): Call<UserResponse>
+    ): Response<UserResponse>
 
     @POST("/api/auth/verify")
     fun verifyUser(@Body registerVerificationBody: RegisterVerificationBody): Call<UserResponse>
 
     @POST("/api/auth/logout")
-    fun logout(@Header("Authorization") bearerToken: String): Call<LogoutResponse>
+    suspend fun logout(@Header("Authorization") bearerToken: String): Response<LogoutResponse>
 
     @POST("/api/auth/refresh")
     fun refreshToken(@Header("Authorization") bearerToken: String): Call<UserResponse>

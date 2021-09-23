@@ -77,5 +77,29 @@
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
+    <TextView
+    android:id="@+id/didntReceiveCodeText"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_marginBottom="50dp"
+    android:textColor="#2196F3"
+    android:textSize="16sp"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/timerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="60 seconds"
+        android:layout_marginBottom="50dp"
+        android:textColor="#2196F3"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

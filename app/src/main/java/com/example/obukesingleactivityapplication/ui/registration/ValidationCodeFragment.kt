@@ -1,15 +1,19 @@
 package com.example.obukesingleactivityapplication.ui.registration
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.obukesingleactivityapplication.R
@@ -18,6 +22,9 @@ import com.example.obukesingleactivityapplication.hideKeyboard
 import com.example.obukesingleactivityapplication.models.RegisterVerificationBody
 import com.example.obukesingleactivityapplication.models.User
 import com.google.gson.Gson
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ValidationCodeFragment : Fragment() {
 
@@ -44,6 +51,13 @@ class ValidationCodeFragment : Fragment() {
             addListenerToEditText(firstDigitEditText, secondDigitEditText)
             addListenerToEditText(secondDigitEditText, thirdDigitEditText)
             addListenerToEditText(thirdDigitEditText, fourthDigitEditText)
+            val didntReceiveValue = SpannableString("Didn't receive code? Send again.")
+            didntReceiveValue.setSpan(ForegroundColorSpan(Color.parseColor("#000000")),0,20, 0)
+            didntReceiveValue.setSpan(ForegroundColorSpan(Color.parseColor("#2196F3")),20,didntReceiveValue.length, 0)
+            didntReceiveCodeText.text = didntReceiveValue
+            didntReceiveCodeText.setOnClickListener{
+                showTimerAndStartCountdown()
+            }
             fourthDigitEditText.addTextChangedListener(object: TextWatcher{
                 override fun beforeTextChanged(
                     s: CharSequence?,
@@ -82,6 +96,31 @@ class ValidationCodeFragment : Fragment() {
             }
         })
     }
+
+    private fun showTimerAndStartCountdown(){
+        binding.apply {
+            didntReceiveCodeText.visibility = View.GONE
+            timerText.visibility = View.VISIBLE
+            lifecycleScope.launch{
+                countdownJob()
+            }
+        }
+    }
+    private suspend fun countdownJob() = coroutineScope {
+        val job = launch {
+            repeat(60){
+                val timerValue = "${60-it} seconds"
+                binding.timerText.text = timerValue
+                delay(1000)
+            }
+        }
+        job.join()
+        binding.apply {
+            didntReceiveCodeText.visibility = View.VISIBLE
+            timerText.visibility = View.GONE
+        }
+    }
+
 
     private fun saveUserToSharedPreferencesAndGoToGreetingsScreen(userObject: User) {
         val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
