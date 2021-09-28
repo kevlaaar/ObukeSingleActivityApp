@@ -35,8 +35,8 @@ class GreetingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
-        val userJsonString = sharedPreferences.getString("USER_OBJECT", "")
         val bearerToken = sharedPreferences.getString("BEARER_TOKEN", "")
+        val userJsonString = sharedPreferences.getString("USER_OBJECT", "")
         val userObject = Gson().fromJson(userJsonString, User::class.java)
 
         with(binding) {

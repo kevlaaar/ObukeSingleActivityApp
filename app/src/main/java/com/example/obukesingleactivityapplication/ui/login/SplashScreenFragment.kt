@@ -57,10 +57,10 @@ class SplashScreenFragment : Fragment() {
     private fun saveUserToSharedPreferencesAndGoToGreetingsScreen(userObject: User) {
         val sharedPreferences = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE)
         val userJson = Gson().toJson(userObject)
-        with(sharedPreferences.edit()) {
-            putString("USER_OBJECT", userJson)
-            apply()
-        }
+//        with(sharedPreferences.edit()) {
+//            putString("USER_OBJECT", userJson)
+//            apply()
+//        }
         lifecycleScope.launch(Dispatchers.Main){
             delay(1000)
             findNavController().navigate(R.id.action_splashScreenFragment_to_greetingsFragment)

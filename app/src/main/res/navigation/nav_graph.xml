@@ -198,7 +198,25 @@
         android:id="@+id/activityHistoryFragment"
         android:name="com.example.obukesingleactivityapplication.ui.activity_history.ActivityHistoryFragment"
         tools:layout="@layout/fragment_activity_history"
-        android:label="ActivityHistoryFragment"/>
+        android:label="ActivityHistoryFragment">
+
+        <action
+            android:id="@+id/action_activityHistoryFragment_to_addActivityFragment"
+            app:destination="@id/addActivityFragment"
+            app:popUpTo="@id/activityHistoryFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpToInclusive="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/addActivityFragment"
+        android:name="com.example.obukesingleactivityapplication.ui.add_activity.AddActivityFragment"
+        tools:layout="@layout/fragment_add_activity"
+        android:label="AddActivityFragment"/>
 
 
 </navigation>

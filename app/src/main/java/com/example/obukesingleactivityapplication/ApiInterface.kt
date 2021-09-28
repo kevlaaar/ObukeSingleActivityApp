@@ -1,7 +1,9 @@
 package com.example.obukesingleactivityapplication
 
 import com.example.obukesingleactivityapplication.models.*
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Response
@@ -64,6 +66,16 @@ interface ApiInterface {
         @Query("badge_type_id") badgeTypeId: Int = 0,
         @Query("badge_id") badgeId: Int = 0
     ): Call<ActivityHistoryResponse>
+
+
+    @Multipart
+    @POST("/api/add-activity")
+    suspend fun addActivity(
+        @Header("Authorization") bearerToken: String,
+        @Part("title") title: RequestBody,
+        @Part("date") date: RequestBody,
+        @Part evidenceImages: MultipartBody.Part
+    ): Response<AddActivityResponse>
 
 
 }
